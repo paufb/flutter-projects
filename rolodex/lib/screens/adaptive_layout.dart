@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
-
-import 'contact_groups.dart';
+import 'package:rolodex/screens/contact_groups.dart';
+import 'package:rolodex/screens/contacts.dart';
 
 const largeScreenMinWidth = 600;
 
@@ -20,6 +20,27 @@ class _AdaptiveLayoutState extends State<AdaptiveLayout> {
     });
   }
 
+  Widget _buildLargeScreenLayout() {
+    return CupertinoPageScaffold(
+      backgroundColor: CupertinoColors.extraLightBackgroundGray,
+      child: SafeArea(
+        child: Row(
+          children: [
+            SizedBox(
+              width: 320,
+              child: ContactGroupsSidebar(
+                selectedListId: selectedListId,
+                onListSelected: _onContactListSelected,
+              ),
+            ),
+            Container(width: 1, color: CupertinoColors.separator),
+            Expanded(child: ContactListDetail(listId: selectedListId)),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
@@ -29,28 +50,9 @@ class _AdaptiveLayoutState extends State<AdaptiveLayout> {
         if (isLargeScreen) {
           return _buildLargeScreenLayout();
         } else {
-          // For small screens, use the original, navigation-style approach.
-          return const ContactGroupsPage();
+          return const ContactGroupsPage(); // Reverted
         }
       },
-    );
-  }
-
-  Widget _buildLargeScreenLayout() {
-    return CupertinoPageScaffold(
-      backgroundColor: CupertinoColors.extraLightBackgroundGray,
-      child: SafeArea(
-        child: Row(
-          children: [
-            // Contact groups list:
-            SizedBox(width: 320, child: Text('Sidebar placeholder')),
-            // Divider:
-            Container(width: 1, color: CupertinoColors.separator),
-            // List detail view:
-            Expanded(child: Text('Details placeholder')),
-          ],
-        ),
-      ),
     );
   }
 }
