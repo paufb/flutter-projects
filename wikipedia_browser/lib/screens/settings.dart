@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:wikipedia_browser/widgets/setting_button.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -20,7 +21,24 @@ class SettingsScreen extends StatelessWidget {
           },
         ),
       ),
-      body: Center(child: Text('Settings')),
+      body: ListView(
+        padding: const EdgeInsets.all(12),
+        children: [
+          SettingButton(
+            icon: Icons.contrast,
+            title: 'Theme',
+            value: 'ThemeValue',
+            onPressed: () {},
+          ),
+          Divider(height: 0),
+          SettingButton(
+            icon: Icons.language,
+            title: 'Language',
+            value: 'LanguageValue',
+            onPressed: () {},
+          ),
+        ],
+      ),
     );
   }
 }

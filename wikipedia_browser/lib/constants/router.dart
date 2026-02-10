@@ -42,7 +42,19 @@ final goRouter = GoRouter(
     GoRoute(
       name: 'settings',
       path: '/settings',
-      builder: (_, _) => const SettingsScreen(),
+      pageBuilder: (_, _) => CustomTransitionPage(
+        child: const SettingsScreen(),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+            SlideTransition(
+              position: animation.drive(
+                Tween(
+                  begin: Offset(1.0, 0.0),
+                  end: Offset.zero,
+                ).chain(CurveTween(curve: Curves.easeInOut)),
+              ),
+              child: child,
+            ),
+      ),
     ),
   ],
 );
