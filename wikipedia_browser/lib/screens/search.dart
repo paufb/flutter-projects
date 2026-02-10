@@ -5,9 +5,6 @@ class SearchScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Wikipedia Browser - Search')),
-      body: Center(child: Text('Search')),
-    );
+    return Scaffold(body: Center(child: Text('Search')));
   }
 }

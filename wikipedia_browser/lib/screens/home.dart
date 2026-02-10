@@ -15,7 +15,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Wikipedia Browser - Home')),
       body: Center(
         child: FutureBuilder(
           future: Future.wait(

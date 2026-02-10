@@ -8,7 +8,6 @@ import 'package:wikipedia_browser/widgets/scaffold_with_nested_navigation.dart';
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _homeNavigatorKey = GlobalKey<NavigatorState>();
 final _searchNavigatorKey = GlobalKey<NavigatorState>();
-final _settingsNavigatorKey = GlobalKey<NavigatorState>();
 
 final goRouter = GoRouter(
   navigatorKey: _rootNavigatorKey,
@@ -38,17 +37,12 @@ final goRouter = GoRouter(
             ),
           ],
         ),
-        StatefulShellBranch(
-          navigatorKey: _settingsNavigatorKey,
-          routes: [
-            GoRoute(
-              name: 'settings',
-              path: '/settings',
-              builder: (_, _) => const SettingsScreen(),
-            ),
-          ],
-        ),
       ],
+    ),
+    GoRoute(
+      name: 'settings',
+      path: '/settings',
+      builder: (_, _) => const SettingsScreen(),
     ),
   ],
 );
