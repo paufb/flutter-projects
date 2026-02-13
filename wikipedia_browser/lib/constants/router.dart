@@ -43,7 +43,7 @@ final goRouter = GoRouter(
       name: 'settings',
       path: '/settings',
       pageBuilder: (_, _) => CustomTransitionPage(
-        child: const SettingsScreen(),
+        child: SettingsScreen(),
         transitionsBuilder: (context, animation, secondaryAnimation, child) =>
             SlideTransition(
               position: animation.drive(
