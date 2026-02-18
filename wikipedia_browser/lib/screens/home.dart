@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wikipedia_browser/api/models/page.dart';
 import 'package:wikipedia_browser/services/api.dart';
 import 'package:wikipedia_browser/widgets/page_preview_card.dart';
 
@@ -11,15 +12,28 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final apiService = APIService();
+  late Future<List<PageSummaryResponse>> _randomPagesFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _refreshRandomPages();
+  }
+
+  Future<void> _refreshRandomPages() async {
+    setState(() {
+      _randomPagesFuture = Future.wait(
+        List.generate(5, (_) => apiService.getRandomPageSummary()),
+      );
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
         child: FutureBuilder(
-          future: Future.wait(
-            List.generate(5, (_) => apiService.getRandomPageSummary()),
-          ),
+          future: _randomPagesFuture,
           builder: (_, snapshot) {
             return switch ((snapshot.connectionState, snapshot.hasError)) {
               (ConnectionState.waiting, _) => const Center(
@@ -28,18 +42,21 @@ class _HomeScreenState extends State<HomeScreen> {
               (_, true) => Center(
                 child: Text('Error getting news: ${snapshot.error}'),
               ),
-              (_, _) => ListView.separated(
-                padding: const EdgeInsets.all(12),
-                itemCount: snapshot.data!.length,
-                separatorBuilder: (_, _) => const SizedBox(height: 12),
-                itemBuilder: (_, index) {
-                  final summary = snapshot.data![index];
-                  return PagePreviewCard(
-                    title: summary.titles.normalized,
-                    thumbnailSource: summary.thumbnail.source,
-                    description: summary.extract,
-                  );
-                },
+              (_, _) => RefreshIndicator(
+                onRefresh: _refreshRandomPages,
+                child: ListView.separated(
+                  padding: const EdgeInsets.all(12),
+                  itemCount: snapshot.data!.length,
+                  separatorBuilder: (_, _) => const SizedBox(height: 12),
+                  itemBuilder: (_, index) {
+                    final summary = snapshot.data![index];
+                    return PagePreviewCard(
+                      title: summary.titles.normalized,
+                      thumbnailSource: summary.thumbnail.source,
+                      description: summary.extract,
+                    );
+                  },
+                ),
               ),
             };
           },
