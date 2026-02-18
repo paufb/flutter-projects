@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:wikipedia_browser/services/api.dart';
 
 class PageActionsBottomModalSheet extends StatelessWidget {
-  const PageActionsBottomModalSheet({super.key, required this.json});
+  const PageActionsBottomModalSheet({super.key, required this.title});
 
-  final String json;
+  final String title;
 
   Widget _buildIconButton(IconData icon, String label, VoidCallback onPressed) {
     return OutlinedButton.icon(
@@ -27,18 +29,12 @@ class PageActionsBottomModalSheet extends StatelessWidget {
         Divider(height: 0),
         _buildIconButton(Icons.info, 'Information', () {}),
         Divider(height: 0),
-        _buildIconButton(Icons.data_object, 'JSON', () {
-          showDialog(
-            context: context,
-            builder: (_) => SimpleDialog(
-              children: [
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Text(json),
-                ),
-              ],
-            ),
-          );
+        _buildIconButton(Icons.open_in_new, 'HTML', () async {
+          await launchUrl(APIService.buildHtmlUri(title));
+        }),
+        Divider(height: 0),
+        _buildIconButton(Icons.open_in_new, 'Mobile HTML', () async {
+          await launchUrl(APIService.buildMobileHtmlUri(title));
         }),
       ],
     );

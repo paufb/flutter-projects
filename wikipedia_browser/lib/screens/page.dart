@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:wikipedia_browser/widgets/page/page_actions_modal_bottom_sheet.dart';
+import 'package:wikipedia_browser/widgets/page/page_details.dart';
 
 class PageScreen extends StatelessWidget {
   const PageScreen({super.key, required this.title});
@@ -21,13 +22,13 @@ class PageScreen extends StatelessWidget {
             onPressed: () {
               showModalBottomSheet(
                 context: context,
-                builder: (_) => const PageActionsBottomModalSheet(json: ""),
+                builder: (_) => PageActionsBottomModalSheet(title: title),
               );
             },
           ),
         ],
       ),
-      body: Center(child: Text("Page with title $title")),
+      body: PageDetails(title: title),
     );
   }
 }
